@@ -6,6 +6,14 @@ const postSchema = mongoose.Schema({
   description:String,
   category:String,
   date:String,
-  time:String
+  time:String,
+  likes:[
+  ],
+  comments:[
+    {
+      username:String,
+      text:String
+    }
+  ]
 });
 module.exports = mongoose.model("postData", postSchema);

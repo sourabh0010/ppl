@@ -1,5 +1,5 @@
-const router=require("express").Router();
-const userApi=require("../Api/usersApi/userApi");
+const router = require("express").Router();
+const userApi = require("../Api/usersApi/userApi");
 const path = require("path");
 const multer = require("multer");
 const storage = multer.diskStorage({
@@ -25,24 +25,36 @@ function checkFileType(file, callback) {
   }
 }
 
-router.post("/", async function(req,res){
-   const respons= await userApi.login(req.body);
+router.post("/", async function (req, res) {
+  const respons = await userApi.login(req.body);
 
-    res.json(respons);
+  res.json(respons);
+});
 
-})
+router.post("/signup", async function (req, res) {
+  const respons = await userApi.signup(req.body);
+  res.json(respons);
+});
 
-router.post("/signup",async function(req,res){
-  const respons= await userApi.signup(req.body);
-  res.json(respons)
-})
+router.post("/users", async function (req, res) {
+  const respons = await userApi.findSingleUser(req.body);
+  res.json(respons);
+});
+router.post(
+  "/updateProfile",
+  upload.single("profile_image"),
+  async (req, res) => {
+    const response = await userApi.updateProfile(req.body);
+    console.log(response);
+  }
+);
 
-router.post("/users",async function(req,res){
-  const respons= await userApi.findSingleUser(req.body);
-  res.json(respons)
-})
-router.post("/updateProfile",upload.single("profile_image"),async (req,res)=>{
- const response=await userApi.updateProfile(req.body);
- console.log(response)
-})
-module.exports=router
+router.post("/forgotPassword", async function (req, res) {
+  const respons = await userApi.sandMail(req.body);
+  res.json(respons);
+});
+router.post("/reset", async function (req, res) {
+  const respons = await userApi.reset(req.body);
+  res.json(respons);
+});
+module.exports = router;

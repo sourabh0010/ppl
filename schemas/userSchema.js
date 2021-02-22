@@ -7,7 +7,8 @@ const userSchema=mongoose.Schema({
     username:String,
     image:String,
     sex:String,
-    description:String
+    description:String,
+    forgotPasswordToken:String
 
 })
 module.exports=mongoose.model("userData",userSchema);

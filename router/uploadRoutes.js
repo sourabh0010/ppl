@@ -44,7 +44,14 @@ router.get("/getpost", async function (req, res) {
 });
 router.post("/singlepost",async (req,res)=>{
   const respons=await postApi.singlePost(req.body)
-  console.log(respons)
+  res.json(respons);
+})
+router.post("/like",async (req,res)=>{
+  const respons=await postApi.like(req.body);
+  res.json(respons);
+})
+router.post("/comment",async (req,res)=>{
+  const respons=await postApi.comment(req.body);
   res.json(respons);
 })
 module.exports = router;

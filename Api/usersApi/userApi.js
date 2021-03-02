@@ -10,11 +10,11 @@ module.exports = {
         if (data.password == response[0].password) {
           return response[0];
         } else {
-          return "wrong password";
+          return { error: "wrong email or password" };
         }
       })
       .catch((err) => {
-        return "user not exist";
+        return { error: "wrong email or password" };
       });
   },
   signup: (data) => {
@@ -75,36 +75,37 @@ module.exports = {
   },
   sandMail: (data) => {
     const random = Str.random();
-      return userData
-        .updateOne({ email: data.email }, { forgotPasswordToken: random })
-        .then(() => {
-          let mailTransporter = nodemailer.createTransport({
-            service: "gmail",
-            auth: {
-              user: "sourabhkamboj247@gmail.com", // generated ethereal user
-              pass: config.pass,
-            },
-          });
-          let mailDetails = {
-            from: config.gmail,
-            to: data.email,
-            subject: "Test mail",
-            text: "http://" + data.port + "/reset/" + random,
-          };
-
-          mailTransporter.sendMail(mailDetails, function (err, data) {
-            if (err) {
-              return err
-            } else {
-              return "Email sent successfully"
-            }
-          });
-              return userData.find({ email: data.email }).then((result) => {
-                return result;
+    return userData
+      .updateOne({ email: data.email }, { forgotPasswordToken: random })
+      .then(() => {
+        let mailTransporter = nodemailer.createTransport({
+          service: "gmail",
+          auth: {
+            user: "sourabhkamboj247@gmail.com", // generated ethereal user
+            pass: config.pass,
+          },
         });
-    }).catch((err)=>{
-      res.json(err)
-    })
+        let mailDetails = {
+          from: config.gmail,
+          to: data.email,
+          subject: "Test mail",
+          text: "http://" + data.port + "/reset/" + random,
+        };
+
+        mailTransporter.sendMail(mailDetails, function (err, data) {
+          if (err) {
+            return err;
+          } else {
+            return "Email sent successfully";
+          }
+        });
+        return userData.find({ email: data.email }).then((result) => {
+          return result;
+        });
+      })
+      .catch((err) => {
+        return err;
+      });
   },
   reset: (data) => {
     return userData
@@ -113,9 +114,9 @@ module.exports = {
         { password: data.newPass }
       )
       .then((result) => {
-        console.log(result)
-        if(result.n==0){
-          return "Token expire.Please"
+        console.log(result);
+        if (result.n == 0) {
+          return "Token expire.Please";
         }
         return "updated succesfully";
       });

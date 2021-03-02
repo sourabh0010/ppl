@@ -16,7 +16,10 @@ module.exports = {
       });
   },
   getPosts: (data) => {
+    // console.log(data)
     return postData.find().then((res) => {
+      // console.log(res)
+      
       return res;
     });
   },

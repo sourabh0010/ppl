@@ -2,7 +2,6 @@ const router = require("express").Router();
 const postApi = require("../Api/postsApi/postApi");
 const path = require("path");
 const multer = require("multer");
-const { response } = require("express");
 const storage = multer.diskStorage({
   destination: "./uploads",
   filename: function (req, file, callback) {
